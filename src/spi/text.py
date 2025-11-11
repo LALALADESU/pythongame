@@ -1,5 +1,6 @@
 import pygame
 from .color import Color
+from .image import Renderable
 
 
 class Font():
@@ -7,7 +8,7 @@ class Font():
         self.path = path
 
 
-class Text():
+class Text(Renderable):
     def __init__(
         self, text: str, font: Font = Font(None), size: int = 16, color: Color = Color.white(),
         bgcolor: Color = None, antialias: bool = False, bold: bool = False, italic: bool = False,
@@ -43,6 +44,12 @@ class Text():
         color = pygame.Color(self.color.r, self.color.g, self.color.b, self.color.a)
         bgcolor = pygame.Color(self.bgcolor.r, self.bgcolor.g, self.bgcolor.b, self.bgcolor.a) if self.bgcolor is not None else None
         self.rendered_text = self.pygame_font.render(self.text, self.antialias, color, bgcolor)
+        
+    def _get_surface(self):
+        return self.rendered_text
+    
+    def _get_area(self):
+        return None
         
     def set_font_path(self, font: Font):
         self.font = font
