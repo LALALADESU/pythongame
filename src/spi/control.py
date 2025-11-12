@@ -189,45 +189,49 @@ class Mouse():
 
 
 class Input():
-    def __init__(self):
-        self._is_quit = False # Quit the game?
-        self._keyboard = Keyboard()
-        self._mouse = Mouse()
     
-    def update(self):
+    _is_quit = False # Quit the game?
+    _keyboard = Keyboard()
+    _mouse = Mouse()
+    
+    @classmethod
+    def update(cls):
         
-        self._keyboard.downing_keys = []
-        self._keyboard.upping_keys = []
+        cls._keyboard.downing_keys = []
+        cls._keyboard.upping_keys = []
         
-        self._mouse.downing_keys = [False, False, False]
-        self._mouse.upping_keys = [False, False, False]
-        self._mouse.wheel_motion = 0
+        cls._mouse.downing_keys = [False, False, False]
+        cls._mouse.upping_keys = [False, False, False]
+        cls._mouse.wheel_motion = 0
         
         for e in pygame.event.get():
             if e.type == pygame.QUIT:
-                self._is_quit = True
+                cls._is_quit = True
             elif e.type == pygame.KEYDOWN:
-                self._keyboard.downing_keys.append(e.dict["key"])
-                self._keyboard.holding_keys.append(e.dict["key"])
+                cls._keyboard.downing_keys.append(e.dict["key"])
+                cls._keyboard.holding_keys.append(e.dict["key"])
             elif e.type == pygame.KEYUP:
-                self._keyboard.upping_keys.append(e.dict["key"])
-                self._keyboard.holding_keys.remove(e.dict["key"])
+                cls._keyboard.upping_keys.append(e.dict["key"])
+                cls._keyboard.holding_keys.remove(e.dict["key"])
             elif e.type == pygame.MOUSEBUTTONDOWN:
                 if 0 <= (button := e.dict["button"] - 1) <= 2:
-                    self._mouse.downing_keys[button] = True
-                    self._mouse.holding_keys[button] = True
+                    cls._mouse.downing_keys[button] = True
+                    cls._mouse.holding_keys[button] = True
             elif e.type == pygame.MOUSEBUTTONUP:
                 if 0 <= (button := e.dict["button"] - 1) <= 2:
-                    self._mouse.upping_keys[button] = True
-                    self._mouse.holding_keys[button] = False
+                    cls._mouse.upping_keys[button] = True
+                    cls._mouse.holding_keys[button] = False
             elif e.type == pygame.MOUSEWHEEL:
-                self._mouse.wheel_motion = e.dict["y"]
-                    
-    def keyboard(self):
-        return self._keyboard
+                cls._mouse.wheel_motion = e.dict["y"]
     
-    def mouse(self):
-        return self._mouse
+    @classmethod   
+    def keyboard(cls):
+        return cls._keyboard
     
-    def is_quit(self):
-        return self._is_quit
+    @classmethod
+    def mouse(cls):
+        return cls._mouse
+    
+    @classmethod
+    def is_quit(cls):
+        return cls._is_quit

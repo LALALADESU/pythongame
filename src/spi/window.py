@@ -6,15 +6,21 @@ from .text import Text
 from .shape import Point
 
 
-class Window():
-    def __init__(self, resolution: Point):
-        self.screen: pygame.Surface = pygame.display.set_mode(resolution)
-        
-    def clear(self):
-        self.screen.fill(Color.black())
-        
-    def blit(self, source: Renderable, dest: Point):
-        self.screen.blit(source._get_surface(), dest, source._get_area())
+RESOLUTION = Point(640, 480)
 
-    def update(self):
+class Window():
+
+    _screen: pygame.Surface = pygame.display.set_mode(RESOLUTION)
+    
+    @classmethod
+    def clear(cls):
+        cls._screen.fill(Color.black())
+    
+    @classmethod
+    def blit(cls, source: Renderable, dest: Point):
+        if source is not None and dest is not None:
+            cls._screen.blit(source._get_surface(), dest, source._get_area())
+
+    @classmethod
+    def update(cls):
         pygame.display.update()
