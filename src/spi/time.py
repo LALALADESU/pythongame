@@ -1,31 +1,32 @@
 import pygame
 import time
-from enum import IntEnum
+from enum import Enum
 
 
-class TimeUnit(IntEnum):
+class TimeUnit(Enum):
     NANOS = 0
     MICROS = 1
     MILLIS = 2
     SECOND = 3
     MINUTE = 4
     HOUR = 5
+    
+    _nanos_per_unit:  dict["TimeUnit", int]
 
     @staticmethod
     def convert(time: float, old_unit: "TimeUnit", new_unit: "TimeUnit") -> float:
         if old_unit == new_unit:
             return time
-        
-        nanos_per_unit = {
-            TimeUnit.NANOS: 1,
-            TimeUnit.MICROS: 1000,
-            TimeUnit.MILLIS: 1000000,
-            TimeUnit.SECOND: 1000000000,
-            TimeUnit.MINUTE: 60000000000,
-            TimeUnit.HOUR: 3600000000000
-        }
-        
-        return time * (nanos_per_unit[old_unit] / nanos_per_unit[new_unit])
+        return time * (TimeUnit._nanos_per_unit[old_unit] / TimeUnit._nanos_per_unit[new_unit])
+
+TimeUnit._nanos_per_unit = {
+    TimeUnit.NANOS: 1,
+    TimeUnit.MICROS: 1000,
+    TimeUnit.MILLIS: 1000000,
+    TimeUnit.SECOND: 1000000000,
+    TimeUnit.MINUTE: 60000000000,
+    TimeUnit.HOUR: 3600000000000
+}
 
 
 class _TimedeltaCalculator():
