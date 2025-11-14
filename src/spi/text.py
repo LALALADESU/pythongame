@@ -45,11 +45,9 @@ class Text(Renderable):
         bgcolor = pygame.Color(self.bgcolor.r, self.bgcolor.g, self.bgcolor.b, self.bgcolor.a) if self.bgcolor is not None else None
         self.rendered_text = self.pygame_font.render(self.text, self.antialias, color, bgcolor)
         
-    def _get_surface(self):
-        return self.rendered_text
-    
-    def _get_area(self):
-        return None
+    def _get_surface(self): return self.rendered_text
+    def _get_area(self):    return None
+    def _get_offset(self):  return None
         
     def set_font_path(self, font: Font):
         self.font = font

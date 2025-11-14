@@ -19,7 +19,11 @@ class Window():
     @classmethod
     def blit(cls, source: Renderable, dest: Point):
         if source is not None and dest is not None:
-            cls._screen.blit(source._get_surface(), dest, source._get_area())
+            cls._screen.blit(
+                source._get_surface(),
+                dest if source._get_offset() is None else dest + source._get_offset(),
+                source._get_area()
+            )
 
     @classmethod
     def update(cls):
